@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.env
+*.env
+tmp_inspect_pipeline.py
+inspect_model.py
+test_predictions.py
+tests/
+.DS_Store

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediction Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/static/style.css" rel="stylesheet">
+</head>
+<body>
+
+  <main class="card">
+    <h1 class="card__title">Prediction Tool</h1>
+
+    <section class="section">
+      <h2 class="section__heading">Predict Compressive Strength</h2>
+      <p class="section__intro">
+        Enter your production parameters below. The model predicts compressive strength
+        in MPa and provides structural recommendations aligned with NIS, BS, and ASTM standards.
+      </p>
+
+      <form id="predict-form" class="form">
+        <div class="field">
+          <label class="field__label" for="cement_brand">Cement Brand</label>
+          <select class="field__control" id="cement_brand" name="cement_brand" required>
+            <option value="Dangote">Dangote Cement</option>
+            <option value="Lafarge">Lafarge Cement</option>
+            <option value="BUA">BUA Cement</option>
+            <option value="PureChem">PureChem Cement</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="mix_ratio">Mix Ratio</label>
+          <select class="field__control" id="mix_ratio" name="mix_ratio" required>
+            <option value="1:5">1:5</option>
+            <option value="1:6">1:6</option>
+            <option value="1:7">1:7</option>
+            <option value="1:8">1:8</option>
+            <option value="1:9">1:9</option>
+            <option value="1:10">1:10</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="water_cement_ratio">Water-Cement Ratio</label>
+          <select class="field__control" id="water_cement_ratio" name="water_cement_ratio" required>
+            <option value="0.50">0.50</option>
+            <option value="0.55">0.55</option>
+            <option value="0.60">0.60</option>
+            <option value="0.65">0.65</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="curing_technique">Curing Method</label>
+          <select class="field__control" id="curing_technique" name="curing_technique" required>
+            <option value="air">Open Air</option>
+            <option value="sprinkling">Sprinkling</option>
+            <option value="submerged">Submerged</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="curing_age">Curing Age (Days)</label>
+          <select class="field__control" id="curing_age" name="curing_age" required>
+            <option value="7">7 Days</option>
+            <option value="14">14 Days</option>
+            <option value="28">28 Days</option>
+          </select>
+        </div>
+
+        <button type="submit" class="button" id="run-button">
+          <span class="button__label">Predict Strength</span>
+          <span class="button__spinner" aria-hidden="true"></span>
+        </button>
+
+        <p class="form-error" id="form-error" role="alert"></p>
+      </form>
+    </section>
+
+    <section class="result" id="result-section" hidden>
+      <h2 class="section__heading">Predicted Compressive Strength</h2>
+
+      <div class="result__value">
+        <span id="result-number">0.00</span>
+        <span class="result__unit">MPa (N/mm&sup2;)</span>
+      </div>
+
+      <p class="result__category" id="result-category"></p>
+
+      <div class="result__advice">
+        <h3 class="result__advice-heading">Structural Recommendation</h3>
+        <p id="result-advice-text"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

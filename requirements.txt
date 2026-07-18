@@ -1,0 +1,10 @@
+# Exact runtime dependencies used by the app and inspection/test scripts.
+fastapi==0.115.0
+uvicorn[standard]==0.51.0
+pydantic==2.13.4
+Jinja2==3.1.6
+pandas==3.0.3
+scikit-learn==1.6.1
+joblib==1.4.2
+shap==0.52.0
+requests==2.34.2

@@ -11,6 +11,7 @@
 
 const NON_LOAD_BEARING_MIN = 2.5;  // keep in sync with standards.py
 const LOAD_BEARING_MIN = 3.45;     // keep in sync with standards.py
+const GAUGE_MAX = 10; // upper bound of the gauge in MPa — adjust only if the dataset's max strength is meaningfully different
 const REQUEST_TIMEOUT_MS = 25000;
 
 const form = document.getElementById("predict-form");
@@ -45,6 +46,30 @@ function categoryFor(strength) {
   return { label: "Low Strength", css: "low" };
 }
 
+const strengthFill = document.getElementById("strength-fill");
+
+function resetGauge() {
+  if (!strengthFill) return;
+  strengthFill.style.transition = "none";
+  strengthFill.style.width = "0%";
+  requestAnimationFrame(() => {
+    strengthFill.style.transition = "width 0.72s ease-out";
+  });
+}
+
+function strengthToFillWidth(strength) {
+  const minStrength = 0;
+  const maxStrength = 10;
+  const clampedStrength = Math.max(minStrength, Math.min(maxStrength, strength));
+  return (clampedStrength / maxStrength) * 100;
+}
+
+function animateGauge(strength) {
+  if (!strengthFill) return;
+  const width = strengthToFillWidth(strength);
+  strengthFill.style.width = `${width}%`;
+}
+
 function renderResult(strength, recommendation) {
   const category = categoryFor(strength);
   resultNumber.textContent = strength.toFixed(2);
@@ -53,9 +78,12 @@ function renderResult(strength, recommendation) {
   resultAdvice.textContent = recommendation;
   resultSection.hidden = false;
   resultSection.classList.remove("result--error");
+  console.log("[gauge] renderResult", { strength });
+  animateGauge(strength);
 }
 
 function renderError(message) {
+  resetGauge();
   resultNumber.textContent = "—";
   resultCategory.textContent = "";
   resultCategory.className = "result__category";
@@ -86,6 +114,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
+    resetGauge();
     const response = await fetchWithTimeout("/predict", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -1,6 +1,7 @@
 """
-Translates a raw predicted strength value into a plain-language recommendation
-(e.g. suitable for load-bearing walls vs non-load-bearing partitions only).
+Translates a raw predicted strength value into a plain-language structural
+recommendation, per the three-tier system defined in the project brief
+(High Strength / Moderate Strength / Low Strength).
 
 IMPORTANT: The thresholds below are placeholders for you to replace with the
 exact clause values from the specific standard your brief references (NIS 87,
@@ -17,16 +18,18 @@ NON_LOAD_BEARING_MIN = 2.5
 def recommend(predicted_strength: float) -> str:
     if predicted_strength >= LOAD_BEARING_MIN:
         return (
-            f"Predicted strength {predicted_strength:.2f} N/mm2 meets the load-bearing "
-            f"threshold (>= {LOAD_BEARING_MIN} N/mm2, placeholder value — verify against your standard)."
+            "The predicted strength is excellent for load-bearing walls. "
+            "Blocks can be safely used for structural applications. "
+            "Ensure standard quality control during production."
         )
     elif predicted_strength >= NON_LOAD_BEARING_MIN:
         return (
-            f"Predicted strength {predicted_strength:.2f} N/mm2 is suitable for non-load-bearing "
-            f"applications only (>= {NON_LOAD_BEARING_MIN} N/mm2, placeholder value — verify against your standard)."
+            "The predicted strength is acceptable, but monitor production quality. "
+            "Adjust mix ratio, water-cement ratio, or curing if needed for consistency."
         )
     else:
         return (
-            f"Predicted strength {predicted_strength:.2f} N/mm2 falls below both placeholder "
-            "thresholds — mix design likely needs adjustment."
+            "The predicted strength is below recommended standards. "
+            "Consider increasing cement content, optimizing water-cement ratio, "
+            "or improving curing methods to enhance block performance."
         )

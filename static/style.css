@@ -255,18 +255,43 @@ body {
   margin-bottom: 24px;
 }
 
+/* Gauge colours follow the strength itself, not the bar length.
+   The gradient is anchored to the full track (0-10 MPa, see GAUGE_MAX in
+   script.js) and the fill only reveals as much of it as the prediction
+   reaches:
+     below 2.5 MPa   -> red
+     2.5 to 3 MPa    -> a short red-to-yellow-to-green blend (yellow in the middle)
+     above 3 MPa     -> green
+   If GAUGE_MAX changes, move the two stops below (stop % = MPa / GAUGE_MAX * 100). */
 .strength-bar__track {
+  --gauge-red: var(--danger);
+  --gauge-yellow: var(--warn);
+  --gauge-green: var(--success-border);
+  --gauge-red-end: 25%;     /* 2.5 MPa on a 0-10 gauge */
+  --gauge-green-start: 30%; /* 3.0 MPa on a 0-10 gauge */
+
   height: 18px;
   border-radius: 999px;
   background: #ECE9E4;
   overflow: hidden;
   border: 1px solid #D0CCCA;
+  container-type: inline-size; /* lets the fill size its gradient to the whole track */
 }
 
 .strength-bar__fill {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #f50303);
+  background-image: linear-gradient(
+    90deg,
+    var(--gauge-red) 0%,
+    var(--gauge-red) var(--gauge-red-end),
+    var(--gauge-yellow) calc((var(--gauge-red-end) + var(--gauge-green-start)) / 2),
+    var(--gauge-green) var(--gauge-green-start),
+    var(--gauge-green) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;  /* fallback for browsers without container units */
+  background-size: 100cqw 100%; /* gradient stays the width of the track while the fill grows */
   transition: width 0.7s ease-out;
 }
 
